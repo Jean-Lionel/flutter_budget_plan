@@ -31,6 +31,12 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(
         id: 'Pk2', title: 'XXX 452', amount: 152.6, date: DateTime.now()),
   ];
+
+  // String? inputTitle;
+  // String? inputAmount;
+
+  final amountController = TextEditingController();
+  final titleController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +56,35 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text(
                     "CHART 8",
                   ),
+                ),
+              ),
+            ),
+            Card(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    TextField(
+                        controller: titleController,
+                        decoration: InputDecoration(
+                          labelText: 'Title',
+                        )),
+                    TextField(
+                        controller: amountController,
+                        decoration: InputDecoration(
+                          labelText: 'Amount',
+                        )),
+                    TextButton(
+                      onPressed: () {
+                        print(amountController.text);
+                        print(titleController.text);
+                      },
+                      child: Text(
+                        "Add Transaction",
+                        style: TextStyle(color: Colors.purple),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
