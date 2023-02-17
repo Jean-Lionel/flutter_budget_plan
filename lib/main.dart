@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_budget_app/tranaction.dart';
+import 'package:flutter_budget_app/models/tranaction.dart';
 import 'package:intl/intl.dart';
 
 void main() {
