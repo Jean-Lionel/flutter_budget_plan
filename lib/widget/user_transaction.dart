@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_budget_app/models/tranaction.dart';
 import 'package:flutter_budget_app/widget/new_transaction.dart';
@@ -17,11 +18,23 @@ class _UserTransactionState extends State<UserTransaction> {
         id: 'Pk2', title: 'XXX 452', amount: 152.6, date: DateTime.now()),
   ];
 
+  void _addNewTransaction(String title, double amount) {
+    final newTrans = Transaction(
+        id: DateTime.now().toString(),
+        title: title,
+        amount: amount,
+        date: DateTime.now());
+
+    setState(() {
+      _userTransactions.add(newTrans);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        NewTransaction(),
+        NewTransaction(_addNewTransaction),
         TransactionList(_userTransactions),
       ],
     );
