@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_budget_app/models/tranaction.dart';
+import 'package:flutter_budget_app/widget/user_transaction.dart';
+import './models/tranaction.dart';
+import './widget/new_transaction.dart';
+import './widget/transaction_list.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -26,17 +29,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> transactions = [
-    Transaction(id: 'Pk1', title: 'XXX 1', amount: 253.6, date: DateTime.now()),
-    Transaction(
-        id: 'Pk2', title: 'XXX 452', amount: 152.6, date: DateTime.now()),
-  ];
-
-  // String? inputTitle;
-  // String? inputAmount;
-
-  final amountController = TextEditingController();
-  final titleController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,90 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Card(
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    TextField(
-                        controller: titleController,
-                        decoration: InputDecoration(
-                          labelText: 'Title',
-                        )),
-                    TextField(
-                        controller: amountController,
-                        decoration: InputDecoration(
-                          labelText: 'Amount',
-                        )),
-                    TextButton(
-                      onPressed: () {
-                        print(amountController.text);
-                        print(titleController.text);
-                      },
-                      child: Text(
-                        "Add Transaction",
-                        style: TextStyle(color: Colors.purple),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Column(
-                children: transactions
-                    .map(
-                      (trans) => Card(
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 20,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.purple,
-                                  width: 2,
-                                ),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 2,
-                                vertical: 2,
-                              ),
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 5,
-                                  horizontal: 5,
-                                ),
-                                child: Text(
-                                  'A : ${trans.amount}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.purple,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  trans.title,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(new DateFormat().format(trans.date)),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                    .toList()),
+            UserTransaction(),
           ],
         ));
+    ;
   }
 }
