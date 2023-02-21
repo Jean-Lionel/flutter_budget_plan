@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_budget_app/widget/user_transaction.dart';
 import './models/tranaction.dart';
 import './widget/new_transaction.dart';
 import './widget/transaction_list.dart';
@@ -14,9 +13,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Personal expensive',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
+        accentColor: Colors.amber,
       ),
       home: MyHomePage(),
     );
@@ -29,33 +29,69 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<Transaction> _userTransactions = [
+    Transaction(id: 'Pk1', title: 'XXX 1', amount: 253.6, date: DateTime.now()),
+    Transaction(
+        id: 'Pk2', title: 'XXX 452', amount: 152.6, date: DateTime.now()),
+  ];
+
+  void _addNewTransaction(String title, double amount) {
+    final newTrans = Transaction(
+        id: DateTime.now().toString(),
+        title: title,
+        amount: amount,
+        date: DateTime.now());
+
+    setState(() {
+      _userTransactions.add(newTrans);
+    });
+  }
+
+  void _startModalNewItem(BuildContext ctxt) {
+    showModalBottomSheet(
+      context: ctxt,
+      builder: (_) => NewTransaction(_addNewTransaction),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Second Application"),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: double.infinity,
-                child: Card(
-                  color: Colors.blue,
-                  elevation: 5,
-                  child: Container(
-                    child: const Text(
-                      "CHART 8",
-                    ),
+      appBar: AppBar(
+        title: const Text("Personal Expensive"),
+        actions: [
+          IconButton(
+              onPressed: () => _startModalNewItem(context),
+              icon: const Icon(Icons.add))
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: double.infinity,
+              child: Card(
+                color: Theme.of(context).primaryColor,
+                elevation: 5,
+                child: Container(
+                  child: const Text(
+                    "CHART 8",
                   ),
                 ),
               ),
-              UserTransaction(),
-            ],
-          ),
-        ));
+            ),
+            TransactionList(_userTransactions),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _startModalNewItem(context),
+      ),
+    );
     ;
   }
 }
