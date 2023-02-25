@@ -13,7 +13,7 @@ class TransactionList extends StatelessWidget {
           ? Column(
               children: [
                 Text("No Transaction List"),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Container(
