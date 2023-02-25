@@ -11,7 +11,10 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('\$${spedingAmount.toStringAsFixed(2)}'),
+        Container(
+          height: 20,
+          child: Text('\$${spedingAmount.toStringAsFixed(0)}'),
+        ),
         const SizedBox(
           height: 4,
         ),
@@ -26,7 +29,7 @@ class ChartBar extends StatelessWidget {
                     color: Colors.grey,
                     width: 1.0,
                   ),
-                  color: Color.fromARGB(220, 220, 220, 1),
+                  color: Color.fromARGB(220, 187, 187, 187),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
