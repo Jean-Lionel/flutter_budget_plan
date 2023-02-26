@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_budget_app/widget/chart.dart';
 import './models/tranaction.dart';
 import './widget/new_transaction.dart';
@@ -7,6 +8,9 @@ import './widget/transaction_list.dart';
 import 'package:intl/intl.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MyApp());
 }
 
@@ -75,11 +79,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
       title: const Text("Personal Expensive "),
-        actions: [
-          IconButton(
-              onPressed: () => _startModalNewItem(context),
-              icon: const Icon(Icons.add))
-        ],
+      actions: [
+        IconButton(
+            onPressed: () => _startModalNewItem(context),
+            icon: const Icon(Icons.add))
+      ],
     );
     return Scaffold(
       appBar: appBar,
