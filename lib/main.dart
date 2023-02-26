@@ -20,6 +20,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
         fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              button: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
       ),
       home: MyHomePage(),
     );
@@ -32,32 +37,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-    Transaction(id: 'Pk1', title: 'XXX 1', amount: 253.6, date: DateTime.now()),
-    Transaction(
-        id: 'Pk1', title: 'XXX 1452', amount: 253.6, date: DateTime.now()),
-    Transaction(
-        id: 'Pk1', title: 'XXX 4200', amount: 253.6, date: DateTime.now()),
-    Transaction(
-        id: 'Pk1', title: 'XXX 7850', amount: 253.6, date: DateTime.now()),
-    Transaction(
-        id: 'Pk3', title: 'XXX 15', amount: 252.6, date: DateTime.now()),
-    Transaction(
-        id: 'Pk2', title: 'XXX 452', amount: 152.6, date: DateTime.now()),
-  ];
+  final List<Transaction> _userTransactions = [];
 
   List<Transaction> get _recetTransactions {
     var items = _userTransactions.where((element) =>
-        element.date.isAfter(DateTime.now().subtract(Duration(days: 7))));
+        element.date.isAfter(DateTime.now().subtract(const Duration(days: 7))));
     return items.toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date_time) {
     final newTrans = Transaction(
-        id: DateTime.now().toString(),
-        title: title,
-        amount: amount,
-        date: DateTime.now());
+      id: DateTime.now().toString(),
+      title: title,
+      amount: amount,
+      date: date_time,
+    );
 
     setState(() {
       _userTransactions.add(newTrans);
@@ -71,30 +65,49 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Personal Expensive"),
+    final AppBar appBar = AppBar(
+      title: const Text("Personal Expensive "),
         actions: [
           IconButton(
               onPressed: () => _startModalNewItem(context),
               icon: const Icon(Icons.add))
         ],
-      ),
+    );
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Chart(_recetTransactions),
-            TransactionList(_userTransactions),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.3,
+              child: Chart(_recetTransactions),
+            ),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: TransactionList(_userTransactions, _deleteTransaction),
+            ),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () => _startModalNewItem(context),
       ),
     );

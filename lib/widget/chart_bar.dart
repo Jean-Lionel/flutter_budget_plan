@@ -29,7 +29,7 @@ class ChartBar extends StatelessWidget {
                     color: Colors.grey,
                     width: 1.0,
                   ),
-                  color: Color.fromARGB(220, 187, 187, 187),
+                  color: Color.fromARGB(220, 200, 195, 195),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),

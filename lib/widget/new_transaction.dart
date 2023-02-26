@@ -1,30 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
-
   NewTransaction(this.addTx);
-
   @override
   State<NewTransaction> createState() => _NewTransactionState();
 }
 
 class _NewTransactionState extends State<NewTransaction> {
   final amountController = TextEditingController();
-
   final titleController = TextEditingController();
+  DateTime? _selectDateTime;
 
   void submitVal() {
-    String title = titleController.text;
-    double amount = double.parse(amountController.text);
-
-    if (title.isEmpty || amount < 0) {
+    if (amountController.text == null) {
       return;
     }
-    widget.addTx(title, amount);
+    String title = titleController.text;
+    double amount = double.parse(amountController.text);
+    if (title.isEmpty || amount < 0 || _selectDateTime == null) {
+      return;
+    }
+    widget.addTx(title, amount, _selectDateTime);
 
     Navigator.of(context).pop();
+  }
+
+  void _presetDatePicker() {
+    print('=============');
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectDateTime = pickedDate;
+      });
+    });
   }
 
   @override
@@ -49,12 +67,38 @@ class _NewTransactionState extends State<NewTransaction> {
               keyboardType: TextInputType.number,
               onSubmitted: (_) => submitVal,
             ),
-            TextButton(
-              onPressed: submitVal,
-              child: const Text(
-                "Add Transaction",
-                style: TextStyle(color: Colors.purple),
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(_selectDateTime == null
+                        ? 'No Date Choosed'
+                        : DateFormat.yMMMd()
+                            .format(_selectDateTime as DateTime)),
+                  ),
+                  TextButton(
+                    onPressed: _presetDatePicker,
+                    child: Text(
+                      'Choose Date',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: submitVal,
+                  child: const Text(
+                    "Add Transaction",
+                  ),
+                ),
+              ],
             )
           ],
         ),
