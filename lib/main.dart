@@ -49,6 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return items.toList();
   }
 
+  bool showChart = false;
+
   void _addNewTransaction(String title, double amount, DateTime date_time) {
     final newTrans = Transaction(
       id: DateTime.now().toString(),
@@ -92,13 +94,34 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Show Bar",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                Switch(
+                    value: showChart,
+                    onChanged: (val) {
+                      setState(() {
+                        showChart = val;
+                      });
+                    }),
+              ],
+            ),
+            showChart
+                ? 
             Container(
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
-                  0.3,
+                        0.7,
               child: Chart(_recetTransactions),
-            ),
+                  )
+                :
             Container(
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
